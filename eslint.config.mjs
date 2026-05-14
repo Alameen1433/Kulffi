@@ -12,8 +12,6 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
-    "public/mirror-assets/**",
-    "public/mirror/**",
     "public/draco/**",
     "public/sw.js",
     "scripts/**",
