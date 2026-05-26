@@ -26,7 +26,7 @@ function StepIndicator({
   current: number;
 }) {
   return (
-    <div className="flex items-center justify-center gap-2 px-6 py-4 border-b-2 border-[#A31D1D]/10">
+    <div className="flex items-center justify-center gap-1.5 px-3 py-3 border-b-2 border-[#A31D1D]/10 md:gap-2 md:px-6 md:py-4">
       {steps.map((step, i) => (
         <div key={step.id} className="flex items-center gap-2">
           <div
@@ -65,7 +65,7 @@ function StepIndicator({
 }
 
 function CartStep({ onNext }: { onNext: () => void }) {
-  const { items, updateQuantity, removeItem, totalPrice, clearCart, setIsOpen } = useCart();
+  const { items, updateQuantity, removeItem, totalPrice, clearCart } = useCart();
   const contentRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -92,14 +92,14 @@ function CartStep({ onNext }: { onNext: () => void }) {
 
   return (
     <div className="flex flex-col h-full">
-      <div ref={contentRef} className="flex-1 overflow-y-auto px-6 py-6">
-        <div className="flex flex-col gap-5">
+      <div ref={contentRef} className="flex-1 overflow-y-auto px-4 py-5 md:px-6 md:py-6">
+        <div className="flex flex-col gap-4 md:gap-5">
           {items.map((item) => (
             <div
               key={item.id}
-              className="cart-item group flex gap-4 p-3 rounded-xl border-2 border-[#A31D1D]/10 bg-white/50 transition-all duration-300 hover:border-[#A31D1D]/30 hover:shadow-[4px_4px_0_#A31D1D]/10"
+              className="cart-item group flex gap-3 md:gap-4 p-3 rounded-xl border-2 border-[#A31D1D]/10 bg-white/50 transition-all duration-300 hover:border-[#A31D1D]/30 hover:shadow-[4px_4px_0_#A31D1D]/10"
             >
-              <div className="relative h-20 w-20 shrink-0 overflow-hidden rounded-lg border-2 border-[#A31D1D]/10">
+              <div className="relative h-[4.5rem] w-[4.5rem] md:h-20 md:w-20 shrink-0 overflow-hidden rounded-lg border-2 border-[#A31D1D]/10">
                 <img src={item.image} alt={item.name} className="h-full w-full object-cover" />
               </div>
               <div className="flex flex-1 flex-col justify-between py-0.5">
@@ -155,7 +155,7 @@ function CartStep({ onNext }: { onNext: () => void }) {
           )}
         </div>
       </div>
-      <div className="border-t-2 border-[#A31D1D]/15 px-6 py-6 bg-[#FCE9D5]">
+      <div className="border-t-2 border-[#A31D1D]/15 px-4 py-5 bg-[#FCE9D5] pb-safe md:px-6 md:py-6">
         <div className="flex items-center justify-between mb-2">
           <span className="text-sm font-medium text-[#A31D1D]/70">Subtotal</span>
           <span className="font-display font-bold text-lg text-[#A31D1D]">${totalPrice.toFixed(2)}</span>
@@ -211,7 +211,7 @@ function ShippingStep({ onNext, onBack }: { onNext: () => void; onBack: () => vo
 
   return (
     <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col h-full">
-      <div className="flex-1 overflow-y-auto px-6 py-6">
+      <div className="flex-1 overflow-y-auto px-4 py-5 md:px-6 md:py-6">
         <h3 className="font-display font-bold text-lg uppercase tracking-widest text-[#A31D1D] mb-6 flex items-center gap-2">
           <Truck className="h-5 w-5" />
           Shipping Address
@@ -243,7 +243,7 @@ function ShippingStep({ onNext, onBack }: { onNext: () => void; onBack: () => vo
               className={inputClass("address")}
             />
           </div>
-          <div className="field-group grid grid-cols-2 gap-4">
+          <div className="field-group grid gap-4 sm:grid-cols-2">
             <div>
               <label htmlFor="shipping-city" className="block text-[11px] font-semibold uppercase tracking-wider text-[#A31D1D]/60 mb-1.5">
                 City *
@@ -271,7 +271,7 @@ function ShippingStep({ onNext, onBack }: { onNext: () => void; onBack: () => vo
               />
             </div>
           </div>
-          <div className="field-group grid grid-cols-2 gap-4">
+          <div className="field-group grid gap-4 sm:grid-cols-2">
             <div>
               <label htmlFor="shipping-zip" className="block text-[11px] font-semibold uppercase tracking-wider text-[#A31D1D]/60 mb-1.5">
                 ZIP / Postal *
@@ -299,7 +299,7 @@ function ShippingStep({ onNext, onBack }: { onNext: () => void; onBack: () => vo
               />
             </div>
           </div>
-          <div className="field-group grid grid-cols-2 gap-4">
+          <div className="field-group grid gap-4 sm:grid-cols-2">
             <div>
               <label htmlFor="shipping-phone" className="block text-[11px] font-semibold uppercase tracking-wider text-[#A31D1D]/60 mb-1.5">
                 Phone *
@@ -331,7 +331,7 @@ function ShippingStep({ onNext, onBack }: { onNext: () => void; onBack: () => vo
           </div>
         </div>
       </div>
-      <div className="border-t-2 border-[#A31D1D]/15 px-6 py-6 bg-[#FCE9D5] flex items-center gap-3">
+      <div className="border-t-2 border-[#A31D1D]/15 px-4 py-5 bg-[#FCE9D5] flex items-center gap-3 pb-safe md:px-6 md:py-6">
         <button
           type="button"
           onClick={onBack}
@@ -341,7 +341,7 @@ function ShippingStep({ onNext, onBack }: { onNext: () => void; onBack: () => vo
         </button>
         <button
           type="submit"
-          className="flex-1 py-4 bg-[#A31D1D] text-[#FCE9D5] font-display font-bold text-sm uppercase tracking-[0.2em] rounded-full shadow-[4px_4px_0_#2A1810] transition-all duration-300 hover:-translate-y-1 hover:shadow-[6px_6px_0_#2A1810] active:translate-y-[2px] active:shadow-[2px_2px_0_#2A1810]"
+          className="flex-1 min-h-12 py-3.5 bg-[#A31D1D] text-[#FCE9D5] font-display font-bold text-xs md:text-sm uppercase tracking-[0.16em] md:tracking-[0.2em] rounded-full shadow-[3px_3px_0_#2A1810] md:shadow-[4px_4px_0_#2A1810] transition-all duration-300 hover:-translate-y-1 hover:shadow-[6px_6px_0_#2A1810] active:translate-y-[2px] active:shadow-[2px_2px_0_#2A1810]"
         >
           Continue to Payment
         </button>
@@ -424,7 +424,7 @@ function PaymentStep({ onNext, onBack }: { onNext: () => void; onBack: () => voi
     } py-3 text-[#A31D1D] text-sm font-medium outline-none transition-colors duration-300 focus:border-[#A31D1D] placeholder:text-[#A31D1D]/30`;
 
   const methodButtonClass = (method: string) =>
-    `py-3 px-2 rounded-xl border-2 font-display font-bold text-[10px] sm:text-xs uppercase tracking-widest transition-all duration-300 ${
+    `min-h-12 py-2.5 px-2 rounded-xl border-2 font-display font-bold text-[10px] sm:text-xs uppercase tracking-[0.12em] sm:tracking-widest leading-tight transition-all duration-300 ${
       paymentInfo.method === method
         ? "bg-[#A31D1D] border-[#A31D1D] text-[#FCE9D5] shadow-[3px_3px_0_#2A1810]"
         : "bg-transparent border-[#A31D1D]/20 text-[#A31D1D]/60 hover:border-[#A31D1D]/40"
@@ -432,7 +432,7 @@ function PaymentStep({ onNext, onBack }: { onNext: () => void; onBack: () => voi
 
   return (
     <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col h-full">
-      <div className="flex-1 overflow-y-auto px-6 py-6">
+      <div className="flex-1 overflow-y-auto px-4 py-5 md:px-6 md:py-6">
         <h3 className="font-display font-bold text-lg uppercase tracking-widest text-[#A31D1D] mb-6 flex items-center gap-2">
           <CreditCard className="h-5 w-5" />
           Payment Method
@@ -509,7 +509,7 @@ function PaymentStep({ onNext, onBack }: { onNext: () => void; onBack: () => voi
                   className={inputClass("cardNumber")}
                 />
               </div>
-              <div className="field-group grid grid-cols-2 gap-4">
+            <div className="field-group grid gap-4 sm:grid-cols-2">
                 <div>
                   <label className="block text-[11px] font-semibold uppercase tracking-wider text-[#A31D1D]/60 mb-1.5">
                     Expiry *
@@ -722,7 +722,7 @@ function PaymentStep({ onNext, onBack }: { onNext: () => void; onBack: () => voi
           <span>Your payment info is secure and encrypted.</span>
         </div>
       </div>
-      <div className="border-t-2 border-[#A31D1D]/15 px-6 py-6 bg-[#FCE9D5] flex items-center gap-3">
+      <div className="border-t-2 border-[#A31D1D]/15 px-4 py-5 bg-[#FCE9D5] flex items-center gap-3 pb-safe md:px-6 md:py-6">
         <button
           type="button"
           onClick={onBack}
@@ -732,7 +732,7 @@ function PaymentStep({ onNext, onBack }: { onNext: () => void; onBack: () => voi
         </button>
         <button
           type="submit"
-          className="flex-1 py-4 bg-[#A31D1D] text-[#FCE9D5] font-display font-bold text-sm uppercase tracking-[0.2em] rounded-full shadow-[4px_4px_0_#2A1810] transition-all duration-300 hover:-translate-y-1 hover:shadow-[6px_6px_0_#2A1810] active:translate-y-[2px] active:shadow-[2px_2px_0_#2A1810]"
+          className="flex-1 min-h-12 py-3.5 bg-[#A31D1D] text-[#FCE9D5] font-display font-bold text-xs md:text-sm uppercase tracking-[0.14em] md:tracking-[0.2em] rounded-full shadow-[3px_3px_0_#2A1810] md:shadow-[4px_4px_0_#2A1810] transition-all duration-300 hover:-translate-y-1 hover:shadow-[6px_6px_0_#2A1810] active:translate-y-[2px] active:shadow-[2px_2px_0_#2A1810]"
         >
           Review Order — ${totalPrice.toFixed(2)}
         </button>
@@ -779,7 +779,7 @@ function ReviewStep({ onNext, onBack }: { onNext: () => void; onBack: () => void
 
   return (
     <div className="flex flex-col h-full">
-      <div ref={contentRef} className="flex-1 overflow-y-auto px-6 py-6">
+      <div ref={contentRef} className="flex-1 overflow-y-auto px-4 py-5 md:px-6 md:py-6">
         <h3 className="font-display font-bold text-lg uppercase tracking-widest text-[#A31D1D] mb-6 flex items-center gap-2">
           <Package className="h-5 w-5" />
           Review Your Order
@@ -899,7 +899,7 @@ function ReviewStep({ onNext, onBack }: { onNext: () => void; onBack: () => void
           </div>
         </div>
       </div>
-      <div className="border-t-2 border-[#A31D1D]/15 px-6 py-6 bg-[#FCE9D5] flex items-center gap-3">
+      <div className="border-t-2 border-[#A31D1D]/15 px-4 py-5 bg-[#FCE9D5] flex items-center gap-3 pb-safe md:px-6 md:py-6">
         <button
           onClick={onBack}
           disabled={placing}
@@ -910,7 +910,7 @@ function ReviewStep({ onNext, onBack }: { onNext: () => void; onBack: () => void
         <button
           onClick={handlePlaceOrder}
           disabled={placing}
-          className="flex-1 py-4 bg-[#A31D1D] text-[#FCE9D5] font-display font-bold text-sm uppercase tracking-[0.2em] rounded-full shadow-[4px_4px_0_#2A1810] transition-all duration-300 hover:-translate-y-1 hover:shadow-[6px_6px_0_#2A1810] active:translate-y-[2px] active:shadow-[2px_2px_0_#2A1810] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          className="flex-1 min-h-12 py-3.5 bg-[#A31D1D] text-[#FCE9D5] font-display font-bold text-xs md:text-sm uppercase tracking-[0.14em] md:tracking-[0.2em] rounded-full shadow-[3px_3px_0_#2A1810] md:shadow-[4px_4px_0_#2A1810] transition-all duration-300 hover:-translate-y-1 hover:shadow-[6px_6px_0_#2A1810] active:translate-y-[2px] active:shadow-[2px_2px_0_#2A1810] disabled:opacity-70 disabled:cursor-not-allowed flex items-center justify-center gap-2"
         >
           {placing ? (
             <>
@@ -1003,11 +1003,11 @@ export default function CheckoutFlow() {
   };
 
   return (
-    <div className="flex flex-col h-full">
+    <div className="flex flex-col h-full min-h-0">
       {checkoutStep !== "success" && (
         <StepIndicator steps={steps} current={stepIndex} />
       )}
-      <div className="flex-1 overflow-hidden">
+      <div className="flex-1 overflow-hidden min-h-0">
         {checkoutStep === "cart" && <CartStep onNext={() => setCheckoutStep("shipping")} />}
         {checkoutStep === "shipping" && (
           <ShippingStep onNext={() => setCheckoutStep("payment")} onBack={() => setCheckoutStep("cart")} />

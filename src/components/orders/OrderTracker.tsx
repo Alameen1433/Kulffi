@@ -98,9 +98,9 @@ function OrderTimeline({ order }: { order: Order }) {
   const currentStatusIndex = statusFlow.indexOf(order.status || "confirmed");
 
   return (
-    <div ref={timelineRef} className="relative pl-4">
+    <div ref={timelineRef} className="relative pl-1 md:pl-4">
       {/* Vertical line */}
-      <div className="absolute left-[27px] top-2 bottom-2 w-[2px] bg-[#A31D1D]/10 rounded-full" />
+      <div className="absolute left-[20px] md:left-[27px] top-2 bottom-2 w-[2px] bg-[#A31D1D]/10 rounded-full" />
 
       <div className="flex flex-col gap-6">
         {statusFlow.map((status, index) => {
@@ -112,13 +112,13 @@ function OrderTimeline({ order }: { order: Order }) {
           return (
             <div
               key={status}
-              className={`timeline-item relative flex items-start gap-4 transition-all duration-300 ${
+              className={`timeline-item relative flex items-start gap-3 md:gap-4 transition-all duration-300 ${
                 isCompleted ? "opacity-100" : "opacity-40"
               }`}
             >
               {/* Dot / Icon */}
               <div
-                className={`relative z-10 flex items-center justify-center h-10 w-10 shrink-0 rounded-full border-2 transition-all duration-300 ${
+                className={`relative z-10 flex items-center justify-center h-9 w-9 md:h-10 md:w-10 shrink-0 rounded-full border-2 transition-all duration-300 ${
                   isCurrent
                     ? `${config.bgColor} border-transparent text-white shadow-[3px_3px_0_#2A1810] scale-110`
                     : isCompleted
@@ -133,7 +133,7 @@ function OrderTimeline({ order }: { order: Order }) {
               <div className="flex-1 pt-1.5">
                 <div className="flex items-center gap-2 flex-wrap">
                   <span
-                    className={`font-display font-bold text-sm uppercase tracking-wider ${
+                    className={`font-display font-bold text-xs md:text-sm uppercase tracking-wider ${
                       isCurrent ? config.color : "text-[#A31D1D]"
                     }`}
                   >
@@ -146,7 +146,7 @@ function OrderTimeline({ order }: { order: Order }) {
                   )}
                 </div>
                 {historyEvent ? (
-                  <p className="text-xs text-[#A31D1D]/60 mt-1">
+                  <p className="text-[11px] md:text-xs text-[#A31D1D]/60 mt-1">
                     {historyEvent.message} &middot; {formatDate(historyEvent.timestamp)} at{" "}
                     {formatTime(historyEvent.timestamp)}
                   </p>
@@ -181,14 +181,14 @@ function OrderCard({ order, index }: { order: Order; index: number }) {
   return (
     <div
       ref={cardRef}
-      className="group rounded-2xl border-2 border-[#A31D1D]/10 bg-white/60 backdrop-blur-sm overflow-hidden transition-all duration-300 hover:border-[#A31D1D]/30 hover:shadow-[6px_6px_0_#A31D1D]/10"
+      className="group rounded-xl md:rounded-2xl border-2 border-[#A31D1D]/10 bg-white/60 backdrop-blur-sm overflow-hidden transition-all duration-300 hover:border-[#A31D1D]/30 hover:shadow-[6px_6px_0_#A31D1D]/10"
     >
       {/* Header */}
-      <div className="px-6 py-5 border-b-2 border-[#A31D1D]/10">
+      <div className="px-4 py-4 md:px-6 md:py-5 border-b-2 border-[#A31D1D]/10">
         <div className="flex items-start justify-between gap-4 flex-wrap">
           <div>
-            <div className="flex items-center gap-3 mb-1">
-              <span className="font-mono text-sm font-bold text-[#A31D1D]">{order.id}</span>
+            <div className="flex items-center gap-2 md:gap-3 mb-1 flex-wrap">
+              <span className="font-mono text-xs md:text-sm font-bold text-[#A31D1D]">{order.id}</span>
               <span
                 className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider text-white ${statusCfg.bgColor}`}
               >
@@ -200,7 +200,7 @@ function OrderCard({ order, index }: { order: Order; index: number }) {
               Placed on {formatDate(order.date)} &middot; {totalItems} item{totalItems > 1 ? "s" : ""}
             </p>
           </div>
-          <div className="text-right">
+          <div className="w-full text-left sm:w-auto sm:text-right">
             <p className="font-display font-bold text-lg text-[#A31D1D]">${order.total.toFixed(2)}</p>
             <p className="text-[11px] text-[#A31D1D]/50 flex items-center justify-end gap-1">
               <Calendar className="h-3 w-3" />
@@ -211,7 +211,7 @@ function OrderCard({ order, index }: { order: Order; index: number }) {
       </div>
 
       {/* Items Preview */}
-      <div className="px-6 py-4">
+      <div className="px-4 py-4 md:px-6">
         <div className="flex items-center gap-3 overflow-x-auto pb-2">
           {order.items.map((item) => (
             <div
@@ -237,13 +237,13 @@ function OrderCard({ order, index }: { order: Order; index: number }) {
       </div>
 
       {/* Timeline */}
-      <div className="px-6 pb-6 pt-2">
+      <div className="px-4 pb-5 pt-2 md:px-6 md:pb-6">
         <OrderTimeline order={order} />
       </div>
 
       {/* Footer */}
-      <div className="px-6 py-4 bg-[#FCE9D5]/40 border-t-2 border-[#A31D1D]/10">
-        <div className="flex items-center justify-between">
+      <div className="px-4 py-4 md:px-6 bg-[#FCE9D5]/40 border-t-2 border-[#A31D1D]/10">
+        <div className="flex items-center justify-between gap-3">
           <div className="text-[11px] text-[#A31D1D]/50">
             <span className="font-semibold">Ship to:</span> {order.shipping.fullName}, {order.shipping.city}
           </div>

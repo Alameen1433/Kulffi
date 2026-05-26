@@ -143,7 +143,7 @@ const scrollRef = useRef(0);
       ref={sectionRef}
       id="story-section"
       className="relative overflow-hidden"
-      style={{ height: "100vh" }}
+      style={{ minHeight: "100svh" }}
     >
       {/* Parallax background — full bleed */}
       <div className="absolute inset-0 z-0 overflow-hidden">
@@ -166,8 +166,8 @@ const scrollRef = useRef(0);
       </div>
 
       {/* Story text — centered, sticky feel via scroll range */}
-      <div className="relative z-10 flex items-center justify-center px-6 h-full">
-        <div className="flex flex-col items-center gap-10 md:gap-14 py-40 md:py-56">
+      <div className="relative z-10 flex min-h-screen-safe items-center justify-center px-5 md:px-6">
+        <div className="flex flex-col items-center gap-8 py-28 md:gap-14 md:py-56">
           {STORY_LINES.map((line, lineIndex) => {
             const words = line.split(" ");
             return (
@@ -177,7 +177,7 @@ const scrollRef = useRef(0);
                 className="text-center leading-[1.3] tracking-[0.01em] flex flex-wrap justify-center gap-x-4 md:gap-x-5 gap-y-1.5"
                 style={{
                   fontFamily: "var(--font-serif), serif",
-                  fontSize: "clamp(2rem, 4.2vw, 52px)",
+                  fontSize: "clamp(1.9rem, 9vw, 52px)",
                   textWrap: "balance",
                   textShadow: "0 2px 20px rgba(0,0,0,0.35)",
                   fontWeight: 400,

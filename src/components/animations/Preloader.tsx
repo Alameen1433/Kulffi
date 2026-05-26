@@ -105,12 +105,18 @@ export default function Preloader({ onComplete }: PreloaderProps) {
       onCompleteRef.current?.();
       return;
     }
+
+    const forceFinish = window.setTimeout(() => {
+      container.style.display = "none";
+      onCompleteRef.current?.();
+    }, 1800);
     
     // Freeze the infinite marquees immediately
     if (mqTlRef.current) mqTlRef.current.pause();
 
     const exitTl = gsap.timeline({
       onComplete: () => {
+        window.clearTimeout(forceFinish);
         container.style.display = "none";
         onCompleteRef.current?.();
       },
@@ -244,8 +250,13 @@ export default function Preloader({ onComplete }: PreloaderProps) {
 
     const safetyTimer = setTimeout(() => {
       if (!isCompleteRef.current) {
-        tasksDoneRef.current = TOTAL_TASKS;
-        checkComplete();
+        isCompleteRef.current = true;
+        displayPctRef.current = 100;
+        if (percentTextRef.current) percentTextRef.current.textContent = `100`;
+        const container = containerRef.current;
+        if (container) container.style.display = "none";
+        onCompleteRef.current?.();
+        loadBackgroundImages();
       }
     }, 2500);
 

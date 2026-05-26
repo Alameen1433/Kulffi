@@ -146,11 +146,11 @@ export default function PopsicleHero({
     <section
       id="popsicle-hero"
       ref={sectionRef}
-      className="relative bg-[#A31D1D] h-[220vh]"
+      className="relative bg-[#A31D1D] h-[205svh] md:h-[220vh]"
     >
       <div
         ref={innerRef}
-        className="relative h-screen w-full overflow-hidden"
+        className="relative h-screen-safe w-full overflow-hidden"
       >
         <div className="absolute inset-0 z-0">
           {children}

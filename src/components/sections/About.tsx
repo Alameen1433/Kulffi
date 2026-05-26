@@ -132,7 +132,7 @@ export default function About() {
     <section
       id="about"
       ref={sectionRef}
-      className="relative overflow-hidden py-24 md:py-40"
+      className="relative overflow-hidden py-[4.5rem] md:py-40"
       style={{
         backgroundColor: "#FFD166",
         backgroundImage: `radial-gradient(circle, rgba(163,29,29,0.14) 1.5px, transparent 1.5px)`,
@@ -247,7 +247,7 @@ export default function About() {
             strokeWidth="2"
             strokeLinecap="round"
             opacity="0.2"
-            transform="translate(100%, 60%)"
+            transform="translate(360 320)"
           />
         </svg>
       </div>
@@ -256,7 +256,7 @@ export default function About() {
         {/* Headline */}
         <h2
           ref={headlineRef}
-          className="font-blenny mb-16 flex flex-col items-center text-center text-[clamp(3.5rem,8vw,8rem)] leading-[0.8] tracking-tighter text-[#A31D1D] drop-shadow-[4px_4px_0_#FCE9D5] md:mb-24"
+          className="font-blenny mb-12 flex flex-col items-center text-center text-[clamp(3rem,18vw,8rem)] leading-[0.84] tracking-tighter text-[#A31D1D] drop-shadow-[3px_3px_0_#FCE9D5] md:mb-24 md:drop-shadow-[4px_4px_0_#FCE9D5]"
         >
           <span className="block overflow-hidden py-2">
             <span className="split-word inline-block origin-bottom">THIS IS</span>
@@ -268,14 +268,14 @@ export default function About() {
           </span>
         </h2>
 
-        <div className="grid items-center gap-16 md:grid-cols-12 md:gap-12">
+        <div className="grid items-center gap-12 md:grid-cols-12 md:gap-12">
           {/* Image (Pop-art Polaroid Style) */}
           <div className="relative flex justify-center md:col-span-5 lg:col-span-6">
             {/* Wrapper for hover effect — NOT animated by GSAP */}
             <div className="group transition-transform duration-500 hover:scale-105">
               <div
                 ref={imageRef}
-                className="relative aspect-[4/5] w-full max-w-[400px] border-4 border-[#A31D1D] bg-[#FCE9D5] p-4 pb-16 shadow-[12px_12px_0_#A31D1D] group-hover:rotate-0"
+                className="relative aspect-[4/5] w-[calc(100vw-4rem)] max-w-[340px] border-[3px] border-[#A31D1D] bg-[#FCE9D5] p-3 pb-12 shadow-[7px_7px_0_#A31D1D] group-hover:rotate-0 md:w-full md:max-w-[400px] md:border-4 md:p-4 md:pb-16 md:shadow-[12px_12px_0_#A31D1D]"
                 style={{ transform: "rotate(-4deg)" }}
               >
                 <img
@@ -289,7 +289,7 @@ export default function About() {
 
                 {/* 100% Natural Stamp */}
                 <div
-                  className="absolute -bottom-4 -right-6 flex h-20 w-20 items-center justify-center rounded-full border-2 border-[#A31D1D] bg-[#FFD166] text-[#A31D1D] shadow-md md:h-24 md:w-24"
+                  className="absolute -bottom-4 -right-4 flex h-[4.5rem] w-[4.5rem] items-center justify-center rounded-full border-2 border-[#A31D1D] bg-[#FFD166] text-[#A31D1D] shadow-md md:-right-6 md:h-24 md:w-24"
                   style={{ transform: "rotate(-12deg)" }}
                 >
                   <div className="text-center">
@@ -309,7 +309,7 @@ export default function About() {
           <div className="flex flex-col justify-center md:col-span-7 lg:col-span-6">
             <div
               ref={textRef}
-              className="relative flex flex-col gap-6 rounded-xl border-4 border-[#A31D1D] bg-[#FCE9D5] p-8 shadow-[8px_8px_0_#A31D1D] md:p-12"
+              className="relative flex flex-col gap-5 rounded-lg border-[3px] border-[#A31D1D] bg-[#FCE9D5] p-6 shadow-[6px_6px_0_#A31D1D] md:gap-6 md:rounded-xl md:border-4 md:p-12 md:shadow-[8px_8px_0_#A31D1D]"
             >
               {/* Comic decorative dots */}
               <div className="absolute right-4 top-4 flex gap-1">
@@ -317,19 +317,19 @@ export default function About() {
                 <span className="h-3 w-3 rounded-full bg-[#A31D1D]" />
               </div>
 
-              <p className="font-display text-xl font-bold uppercase leading-tight tracking-wide text-[#A31D1D] md:text-2xl">
+              <p className="font-display text-lg font-bold uppercase leading-tight tracking-wide text-[#A31D1D] md:text-2xl">
                 It hits different, even if you think you don&apos;t like ice
                 cream.
               </p>
 
               <div className="my-2 h-1 w-full bg-[#A31D1D]" />
 
-              <p className="text-base font-medium leading-relaxed text-[#A31D1D]/90 md:text-lg">
+              <p className="text-[15px] font-medium leading-relaxed text-[#A31D1D]/90 md:text-lg">
                 Our goal isn&apos;t just ice cream. That would be too easy. We
                 need to make you feel something when you bite into our bar.
                 Something that stays.
               </p>
-              <p className="text-base font-medium leading-relaxed text-[#A31D1D]/90 md:text-lg">
+              <p className="text-[15px] font-medium leading-relaxed text-[#A31D1D]/90 md:text-lg">
                 We don&apos;t tolerate shortcuts: not in flavors, not in
                 ingredients, not in production. Prepare for a dopamine craving
                 for &quot;that exact taste.&quot;
@@ -338,7 +338,7 @@ export default function About() {
               <div className="self-start pt-6">
                 <button
                   onClick={() => document.getElementById("story-section")?.scrollIntoView({ behavior: "smooth" })}
-                  className="group rounded-full border-2 border-[#A31D1D] bg-[#A31D1D] px-8 py-3 font-display text-[14px] font-bold uppercase tracking-widest text-[#FCE9D5] shadow-[4px_4px_0_#2A1810] transition-all duration-300 hover:-translate-y-1 hover:bg-[#FCE9D5] hover:text-[#A31D1D] hover:shadow-[6px_6px_0_#A31D1D] active:translate-y-[2px] active:shadow-[2px_2px_0_#A31D1D]"
+                  className="group min-h-12 rounded-full border-2 border-[#A31D1D] bg-[#A31D1D] px-7 py-3 font-display text-[12px] font-bold uppercase tracking-widest text-[#FCE9D5] shadow-[3px_3px_0_#2A1810] transition-all duration-300 hover:-translate-y-1 hover:bg-[#FCE9D5] hover:text-[#A31D1D] hover:shadow-[6px_6px_0_#A31D1D] active:translate-y-[2px] active:shadow-[2px_2px_0_#A31D1D] md:px-8 md:text-[14px] md:shadow-[4px_4px_0_#2A1810]"
                 >
                   Read Our Story
                 </button>

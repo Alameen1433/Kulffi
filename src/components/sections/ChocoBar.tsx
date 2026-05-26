@@ -5,6 +5,14 @@ import { useChocoScene } from "@/hooks/useChocoScene";
 import { FLAVORS } from "@/lib/choco/flavors";
 import { lenisRef } from "@/lib/lenis";
 
+const MOBILE_FLAVOR_IMAGES: Record<string, string> = {
+  belgium: "/images/dark_choc_bar.webp",
+  coco: "/images/coconut.webp",
+  dark: "/images/ice_cream_bar.webp",
+  alphonso: "/images/mango_bar.webp",
+  malai: "/images/malai.webp",
+};
+
 /** Clamp */
 function clamp(v: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, v));
@@ -32,6 +40,98 @@ function getRawBlockProgress(scrollProgress: number, textIndex: number): number 
 }
 
 export default function ChocoBar() {
+  const [isMobile, setIsMobile] = useState(() =>
+    typeof window === "undefined" ? false : window.matchMedia("(max-width: 767px)").matches
+  );
+
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 767px)");
+    const onChange = () => setIsMobile(media.matches);
+
+    onChange();
+    media.addEventListener("change", onChange);
+    return () => media.removeEventListener("change", onChange);
+  }, []);
+
+  return isMobile ? <MobileChocoBar /> : <DesktopChocoBar />;
+}
+
+function MobileChocoBar() {
+  const [activeFlavorIndex, setActiveFlavorIndex] = useState(0);
+  const activeFlavor = FLAVORS[activeFlavorIndex];
+  const heroBlock = activeFlavor.textBlocks[1] ?? activeFlavor.textBlocks[0];
+  const supportingBlocks = activeFlavor.textBlocks.filter((_, index) => index !== 1).slice(0, 3);
+
+  return (
+    <section
+      id="choco-scroll-section"
+      className="relative overflow-hidden bg-[#FDF0DE] px-5 py-20"
+    >
+      <div className="mx-auto flex max-w-[420px] flex-col gap-8">
+        <div>
+          <p className="mb-3 font-display text-[11px] font-bold uppercase tracking-[0.24em] text-[#A31D1D]/55">
+            Choco Bar Collection
+          </p>
+          <h2 className="font-serif text-[clamp(2.65rem,13vw,4rem)] font-bold leading-[0.9] text-[#A31D1D]">
+            {heroBlock.headline.join(" ")}
+          </h2>
+          <p className="mt-5 text-[15px] font-medium leading-relaxed text-[#A31D1D]/75">
+            {heroBlock.description}
+          </p>
+        </div>
+
+        <div className="hide-scrollbar -mx-5 flex gap-2 overflow-x-auto px-5 pb-1">
+          {FLAVORS.map((flavor, index) => {
+            const isActive = index === activeFlavorIndex;
+            return (
+              <button
+                key={flavor.id}
+                type="button"
+                onClick={() => setActiveFlavorIndex(index)}
+                className={`min-h-11 shrink-0 rounded-full border px-4 py-2 font-display text-[11px] font-bold uppercase tracking-[0.14em] transition-colors ${
+                  isActive
+                    ? "border-[#A31D1D] bg-[#A31D1D] text-[#FDF0DE]"
+                    : "border-[#A31D1D]/25 text-[#A31D1D]/70"
+                }`}
+              >
+                {flavor.name}
+              </button>
+            );
+          })}
+        </div>
+
+        <div className="overflow-hidden rounded-xl border-[3px] border-[#A31D1D] bg-[#FCE9D5] shadow-[6px_6px_0_#A31D1D]">
+          <div className="relative aspect-[4/5] overflow-hidden border-b-[3px] border-[#A31D1D]">
+            <img
+              src={MOBILE_FLAVOR_IMAGES[activeFlavor.id] ?? "/images/dark_choc_bar.webp"}
+              alt={`${activeFlavor.name} Kulffi choco bar`}
+              className="h-full w-full object-cover"
+              loading="lazy"
+            />
+            <div className="absolute left-3 top-3 rounded-full border-2 border-[#A31D1D] bg-[#FCE9D5] px-3 py-1 font-display text-[11px] font-bold uppercase tracking-[0.14em] text-[#A31D1D] shadow-[2px_2px_0_#2A1810]">
+              {activeFlavor.name}
+            </div>
+          </div>
+
+          <div className="flex flex-col gap-5 p-5">
+            {supportingBlocks.map((block) => (
+              <div key={block.headline.join("-")} className="border-b border-[#A31D1D]/15 pb-5 last:border-b-0 last:pb-0">
+                <h3 className="font-display text-[1rem] font-bold uppercase leading-tight tracking-[0.12em] text-[#A31D1D]">
+                  {block.headline.join(" ")}
+                </h3>
+                <p className="mt-2 text-sm font-medium leading-relaxed text-[#A31D1D]/70">
+                  {block.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function DesktopChocoBar() {
   const sectionRef = useRef<HTMLElement>(null);
   const { canvasRef, isLoading, loadFlavor, activeFlavorIndex, scrollRef } = useChocoScene();
 
@@ -189,10 +289,10 @@ export default function ChocoBar() {
     <section
       ref={sectionRef}
       id="choco-scroll-section"
-      className="relative"
-      style={{ height: "500vh", backgroundColor: "#FDF0DE" }}
+      className="relative h-[380svh] md:h-[500vh]"
+      style={{ backgroundColor: "#FDF0DE" }}
     >
-      <div className="sticky top-0 h-screen w-full overflow-hidden" style={{ backgroundColor: "#FDF0DE" }}>
+      <div className="sticky top-0 h-screen-safe w-full overflow-hidden" style={{ backgroundColor: "#FDF0DE" }}>
         {/* 3D Canvas */}
         <canvas ref={canvasRef} className="absolute inset-0 h-full w-full" />
 
@@ -217,15 +317,15 @@ export default function ChocoBar() {
             <div
               key={`${activeFlavorIndex}-${index}`}
               ref={(el) => { containerRefs.current[index] = el; }}
-              className={`pointer-events-none absolute top-0 h-full flex items-start pt-[12vh] sm:pt-[15vh] md:pt-0 md:items-center w-full md:w-auto px-4 md:px-0 justify-center md:justify-start ${
+              className={`pointer-events-none absolute top-0 h-full flex items-start pt-[11svh] sm:pt-[13svh] md:pt-0 md:items-center w-full md:w-auto px-5 md:px-0 justify-center md:justify-start ${
                 block.side === "left"
                   ? "left-0 md:pl-16 lg:pl-24"
                   : "right-0 md:pr-16 lg:pr-24"
               }`}
               style={{ opacity: 0, willChange: "transform, opacity" }}
             >
-              <div className={`max-w-[300px] md:max-w-[380px] lg:max-w-[440px] ${
-                block.side === "left" ? "text-left" : "text-right"
+              <div className={`max-w-[310px] text-center md:max-w-[380px] lg:max-w-[440px] ${
+                block.side === "left" ? "md:text-left" : "md:text-right"
               }`}>
                 {/* Stacked headline */}
                 <h2 className="font-serif font-bold leading-[0.92] tracking-tight mb-5 md:mb-6">
@@ -239,7 +339,7 @@ export default function ChocoBar() {
                         className="inline-block"
                         style={{
                           color: "#A31D1D",
-                          fontSize: "clamp(2.6rem, 5.5vw, 4.2rem)",
+                          fontSize: "clamp(2.25rem, 12vw, 4.2rem)",
                           transform: "translate3d(0, 50px, 0)",
                           willChange: "transform",
                         }}
@@ -256,7 +356,7 @@ export default function ChocoBar() {
                   className="leading-[1.6]"
                   style={{
                     color: "#A31D1D",
-                    fontSize: "clamp(0.95rem, 1.2vw, 1.15rem)",
+                    fontSize: "clamp(0.9rem, 3.9vw, 1.15rem)",
                     opacity: 0,
                     transform: "translate3d(0, 20px, 0)",
                     willChange: "transform, opacity",
@@ -270,9 +370,9 @@ export default function ChocoBar() {
         </div>
 
         {/* Flavor Switcher Pills */}
-        <div className="absolute bottom-10 md:bottom-14 left-0 right-0 z-20 flex justify-center px-4">
+        <div className="absolute bottom-5 md:bottom-14 left-0 right-0 z-20 flex justify-center px-3 pb-safe md:px-4">
           <div
-            className="flex items-center gap-2 overflow-x-auto px-2 py-1"
+            className="hide-scrollbar flex max-w-full items-center gap-2 overflow-x-auto px-2 py-2"
             style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
           >
             {FLAVORS.map((flavor, i) => {
@@ -282,7 +382,7 @@ export default function ChocoBar() {
                   key={flavor.id}
                   onClick={() => handleFlavorSwitch(i)}
                   disabled={isLoading && !isActive}
-                  className={`shrink-0 px-4 py-2 rounded-full text-[11px] font-semibold tracking-[0.15em] uppercase transition-all duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
+                  className={`shrink-0 min-h-10 px-3.5 md:px-4 py-2 rounded-full text-[10px] md:text-[11px] font-semibold tracking-[0.13em] md:tracking-[0.15em] uppercase transition-all duration-300 cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
                     isActive
                       ? "bg-[#A31D1D] text-[#FDF0DE] scale-105"
                       : "bg-transparent text-[#C4785C] border border-[rgba(163,29,29,0.25)] hover:border-[#A31D1D] hover:text-[#A31D1D]"

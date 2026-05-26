@@ -89,7 +89,7 @@ function FlavorCard({ flavor }: { flavor: (typeof featuredFlavors)[0] }) {
   };
 
   return (
-    <div className="group relative flex flex-col h-full bg-[#FCE9D5] border-4 border-[#A31D1D] shadow-[8px_8px_0_#A31D1D] rounded-xl overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-[12px_12px_0_#A31D1D] hover:-rotate-1">
+    <div className="group relative flex flex-col h-full bg-[#FCE9D5] border-[3px] md:border-4 border-[#A31D1D] shadow-[6px_6px_0_#A31D1D] md:shadow-[8px_8px_0_#A31D1D] rounded-lg md:rounded-xl overflow-hidden transition-all duration-500 hover:-translate-y-2 hover:shadow-[12px_12px_0_#A31D1D] hover:-rotate-1">
       {/* Image Section */}
       <div className="relative aspect-square overflow-hidden border-b-4 border-[#A31D1D]">
         <Image
@@ -100,11 +100,11 @@ function FlavorCard({ flavor }: { flavor: (typeof featuredFlavors)[0] }) {
           className="object-cover transition-transform duration-700 ease-out group-hover:scale-110"
         />
         {/* Weight Badge */}
-        <div className="absolute top-4 left-4 bg-[#A31D1D] text-[#FCE9D5] px-3 py-1 font-display font-bold text-sm tracking-wider border-2 border-[#A31D1D] shadow-[2px_2px_0_#2A1810] rotate-3">
+        <div className="absolute top-3 left-3 md:top-4 md:left-4 bg-[#A31D1D] text-[#FCE9D5] px-2.5 md:px-3 py-1 font-display font-bold text-xs md:text-sm tracking-wider border-2 border-[#A31D1D] shadow-[2px_2px_0_#2A1810] rotate-3">
           {flavor.weight}
         </div>
         {/* Price Badge */}
-        <div className="absolute top-4 right-4 bg-[#FCE9D5] text-[#A31D1D] px-3 py-1 font-display font-bold text-sm tracking-wider border-2 border-[#A31D1D] shadow-[2px_2px_0_#2A1810] -rotate-2">
+        <div className="absolute top-3 right-3 md:top-4 md:right-4 bg-[#FCE9D5] text-[#A31D1D] px-2.5 md:px-3 py-1 font-display font-bold text-xs md:text-sm tracking-wider border-2 border-[#A31D1D] shadow-[2px_2px_0_#2A1810] -rotate-2">
           ${flavor.price.toFixed(2)}
         </div>
       </div>
@@ -112,10 +112,10 @@ function FlavorCard({ flavor }: { flavor: (typeof featuredFlavors)[0] }) {
       {/* Info Section */}
       <div className="p-5 md:p-6 flex flex-col flex-grow justify-between gap-4">
         <div>
-          <h3 className="font-display font-bold text-2xl md:text-[26px] leading-none uppercase tracking-wider text-[#A31D1D] drop-shadow-[1px_1px_0_rgba(163,29,29,0.2)]">
+          <h3 className="font-display font-bold text-[1.35rem] md:text-[26px] leading-none uppercase tracking-wider text-[#A31D1D] drop-shadow-[1px_1px_0_rgba(163,29,29,0.2)]">
             {flavor.name}
           </h3>
-          <p className="mt-3 text-sm md:text-base font-medium text-[#A31D1D]/80 leading-relaxed min-h-[48px]">
+          <p className="mt-3 text-sm md:text-base font-medium text-[#A31D1D]/80 leading-relaxed md:min-h-[48px]">
             {flavor.desc}
           </p>
         </div>
@@ -149,7 +149,7 @@ function FlavorCard({ flavor }: { flavor: (typeof featuredFlavors)[0] }) {
         ) : (
           <button
             onClick={handleAdd}
-            className="mt-2 w-full py-3 bg-[#FCE9D5] border-2 border-[#A31D1D] rounded-full text-[#A31D1D] font-display font-bold text-[13px] uppercase tracking-widest shadow-[4px_4px_0_#A31D1D] transition-all duration-300 hover:bg-[#A31D1D] hover:text-[#FCE9D5] hover:-translate-y-1 hover:shadow-[6px_6px_0_#2A1810] active:translate-y-[2px] active:shadow-[2px_2px_0_#2A1810] flex items-center justify-center gap-2"
+            className="mt-2 w-full min-h-12 py-3 bg-[#FCE9D5] border-2 border-[#A31D1D] rounded-full text-[#A31D1D] font-display font-bold text-[12px] md:text-[13px] uppercase tracking-widest shadow-[3px_3px_0_#A31D1D] md:shadow-[4px_4px_0_#A31D1D] transition-all duration-300 hover:bg-[#A31D1D] hover:text-[#FCE9D5] hover:-translate-y-1 hover:shadow-[6px_6px_0_#2A1810] active:translate-y-[2px] active:shadow-[2px_2px_0_#2A1810] flex items-center justify-center gap-2"
           >
             <ShoppingCart className="h-4 w-4" strokeWidth={2} />
             Add to Cart
@@ -224,14 +224,14 @@ export default function Flavors() {
     <section
       id="flavors"
       ref={sectionRef}
-      className="bg-[#FDF0DE] py-24 md:py-40 relative overflow-hidden"
+      className="bg-[#FDF0DE] py-20 md:py-40 relative overflow-hidden"
     >
       <div className="px-6 md:px-12 mx-auto max-w-[1400px]">
         {/* Header Area */}
-        <div className="mb-16 md:mb-24">
+        <div className="mb-12 md:mb-24">
           <h2
             ref={headlineRef}
-            className="font-blenny text-[clamp(3rem,6vw,6rem)] leading-[0.85] tracking-tighter text-[#A31D1D] drop-shadow-[3px_3px_0_#FCE9D5]"
+            className="font-blenny text-[clamp(2.75rem,16vw,6rem)] leading-[0.88] tracking-tighter text-[#A31D1D] drop-shadow-[3px_3px_0_#FCE9D5]"
           >
             <span className="block overflow-hidden py-1">
               <span className="split-word inline-block origin-bottom-left">THE</span>
@@ -246,7 +246,7 @@ export default function Flavors() {
         </div>
 
         {/* Grid */}
-        <div className="grid gap-8 md:gap-10 md:grid-cols-2 lg:grid-cols-4 items-stretch">
+        <div className="grid gap-9 md:gap-10 sm:grid-cols-2 lg:grid-cols-4 items-stretch">
           {featuredFlavors.map((flavor) => (
             <div key={flavor.id} className="flavor-card h-full">
               <FlavorCard flavor={flavor} />

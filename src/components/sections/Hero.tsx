@@ -124,11 +124,9 @@ export default function Hero({ loaded = false }: HeroProps) {
     mm.add("(max-width: 899px)", () => {
       const mobileTl = gsap.timeline({
         scrollTrigger: {
-          trigger: inner,
+          trigger: section,
           start: "top top",
-          end: "+=100%",
-          pin: inner,
-          pinSpacing: true,
+          end: "bottom top",
           scrub: 0.55,
           invalidateOnRefresh: true,
           anticipatePin: 1,
@@ -177,7 +175,7 @@ export default function Hero({ loaded = false }: HeroProps) {
       ref={sectionRef}
       className="relative bg-[#F5E6D3]"
     >
-      <div ref={innerRef} className="relative h-screen w-full overflow-hidden bg-[#F5E6D3]">
+      <div ref={innerRef} className="relative h-screen-safe min-h-[680px] w-full overflow-hidden bg-[#F5E6D3] md:h-screen md:min-h-0">
         {/* Marquee background (moves up during scroll) */}
         <div ref={marqueeWrapRef} className="absolute inset-0 z-0 will-change-transform">
           <Marquee variant="background" />
@@ -205,16 +203,16 @@ export default function Hero({ loaded = false }: HeroProps) {
           </div>
 
         {/* Content Container (sits above the image) */}
-        <div className="absolute inset-0 z-20 flex flex-col justify-between pt-28 pointer-events-none [&>*]:pointer-events-auto">
+        <div className="absolute inset-0 z-20 flex flex-col justify-between pt-24 pb-8 pointer-events-none md:pt-28 md:pb-0 [&>*]:pointer-events-auto">
           {/* Main Hero Content */}
           <div className="relative flex-grow flex items-center px-4 md:px-10 lg:px-16">
-        <div className="w-full max-w-7xl ml-0 mr-auto flex flex-col md:flex-row justify-between items-center gap-12 mt-8 md:mt-0">
+        <div className="w-full max-w-7xl ml-0 mr-auto flex flex-col md:flex-row justify-between items-start md:items-center gap-10 md:gap-12 mt-4 md:mt-0">
 
           {/* Left Content */}
-          <div ref={contentRef} className="max-w-xl text-cream">
+          <div ref={contentRef} className="max-w-[22rem] text-cream sm:max-w-xl">
             {/* Small Label */}
-            <div className="flex items-center gap-2.5 mb-8 group select-none">
-              <span className="text-[10px] md:text-[11px] font-bold tracking-[0.35em] uppercase text-cream/90 transition-all duration-500 ease-out group-hover:tracking-[0.4em] group-hover:text-cream">
+            <div className="flex items-center gap-2.5 mb-6 md:mb-8 group select-none">
+              <span className="text-[9px] md:text-[11px] font-bold tracking-[0.28em] md:tracking-[0.35em] uppercase text-cream/90 transition-all duration-500 ease-out group-hover:tracking-[0.32em] md:group-hover:tracking-[0.4em] group-hover:text-cream">
                 Scoops of Happiness
               </span>
               <div className="flex items-center gap-4">
@@ -223,20 +221,20 @@ export default function Hero({ loaded = false }: HeroProps) {
                   strokeWidth={2.5}
                   className="text-[#A31D1D] transition-transform duration-1000 ease-in-out group-hover:rotate-180" 
                 />
-                <div className="h-[2px] w-14 bg-[#A31D1D] transition-all duration-500 group-hover:w-20" />
+                <div className="h-[2px] w-10 bg-[#A31D1D] transition-all duration-500 group-hover:w-14 md:w-14 md:group-hover:w-20" />
               </div>
             </div>
 
             {/* Headline */}
-            <h1 className="text-[3.5rem] md:text-7xl lg:text-[6rem] leading-[1.05] mb-8 font-serif">
+            <h1 className="text-[3.15rem] md:text-7xl lg:text-[6rem] leading-[1.02] mb-7 md:mb-8 font-serif">
               Made to <br />
-              <span className="font-script text-[#A31D1D] lowercase text-[5.5rem] md:text-[7rem] lg:text-[9rem] leading-[0.7] inline-block -ml-2 -rotate-1 mt-1">brighten</span>
+              <span className="font-script text-[#A31D1D] lowercase text-[4.75rem] md:text-[7rem] lg:text-[9rem] leading-[0.72] inline-block -ml-1 md:-ml-2 -rotate-1 mt-1">brighten</span>
               <br />
               your day<span className="text-[#A31D1D]">.</span>
             </h1>
 
             {/* Paragraph */}
-            <p className="text-sm md:text-base text-cream/90 max-w-md mb-10 leading-relaxed font-sans">
+            <p className="text-[13px] md:text-base text-cream/90 max-w-[20rem] md:max-w-md mb-8 md:mb-10 leading-relaxed font-sans">
               From tropical mango to timeless classics, our ice creams are made with real ingredients and flavors that feel like home.
             </p>
           </div>
@@ -249,11 +247,11 @@ export default function Hero({ loaded = false }: HeroProps) {
         </div>{/* end Content Container */}
 
         {/* Floating Badge */}
-        <div ref={badgeRef} className="absolute bottom-8 right-8 md:bottom-12 md:right-12 z-30 pointer-events-none">
+        <div ref={badgeRef} className="absolute bottom-5 right-5 md:bottom-12 md:right-12 z-30 pointer-events-none">
           <img
             src="/images/badge.webp"
             alt="Quality Seal"
-            className="w-24 h-24 md:w-40 md:h-40 object-contain drop-shadow-xl"
+            className="w-20 h-20 md:w-40 md:h-40 object-contain drop-shadow-xl"
           />
         </div>
       </div>{/* end inner */}

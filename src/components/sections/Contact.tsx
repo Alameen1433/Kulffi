@@ -120,21 +120,21 @@ export default function Contact({ layered = false }: ContactProps) {
       id="contact"
       ref={sectionRef}
       className={`${
-        layered ? "absolute inset-0 z-0 min-h-screen" : "relative"
+        layered ? "absolute inset-0 z-0 min-h-screen-safe" : "relative"
       } bg-[#A31D1D]`}
     >
       <div
-        className={`px-6 md:px-12 max-w-[1400px] mx-auto flex flex-col ${
+        className={`px-5 md:px-12 max-w-[1400px] mx-auto flex flex-col ${
           layered
-            ? "min-h-full h-full pt-20 md:pt-24 lg:pt-28 pb-8 md:pb-10 justify-start md:justify-center overflow-y-auto overflow-x-hidden"
+            ? "min-h-full h-full pt-[4.5rem] md:pt-24 lg:pt-28 pb-6 md:pb-10 justify-start md:justify-center overflow-y-auto overflow-x-hidden pb-safe"
             : "py-24 md:py-32"
         }`}
       >
         {/* ── Header ── */}
-        <div className={`${layered ? "mb-8 md:mb-10" : "mb-16 md:mb-20"}`}>
+        <div className={`${layered ? "mb-7 md:mb-10" : "mb-16 md:mb-20"}`}>
           <h2
             ref={headlineRef}
-            className="font-blenny text-[clamp(2.8rem,6vw,5rem)] leading-[1] tracking-tight text-[#FCE9D5]"
+            className="font-blenny text-[clamp(2.5rem,14vw,5rem)] leading-[1] tracking-tight text-[#FCE9D5]"
           >
             Say Hello
           </h2>
@@ -144,9 +144,9 @@ export default function Contact({ layered = false }: ContactProps) {
         </div>
 
         {/* ── Content Grid ── */}
-        <div className={`grid lg:grid-cols-[1fr_1.2fr] ${layered ? "gap-10 md:gap-14 lg:gap-16" : "gap-16 md:gap-20 lg:gap-24"}`}>
+        <div className={`grid lg:grid-cols-[1fr_1.2fr] ${layered ? "gap-8 md:gap-14 lg:gap-16" : "gap-16 md:gap-20 lg:gap-24"}`}>
           {/* Left: Contact Info */}
-          <div className={`flex flex-col ${layered ? "gap-6 md:gap-8" : "gap-10 md:gap-12"}`}>
+          <div className={`flex flex-col ${layered ? "gap-5 md:gap-8" : "gap-10 md:gap-12"}`}>
             <div className="form-field">
               <div className="flex items-start gap-4">
                 <div className="flex items-center justify-center h-10 w-10 rounded-full border border-[#FCE9D5]/20 shrink-0">
@@ -158,7 +158,7 @@ export default function Contact({ layered = false }: ContactProps) {
                   </p>
                   <a
                     href="mailto:hello@kulffi.com"
-                    className="text-base md:text-lg text-[#FCE9D5] hover:text-[#FCE9D5]/80 transition-colors duration-300"
+                  className="break-all text-base md:text-lg text-[#FCE9D5] hover:text-[#FCE9D5]/80 transition-colors duration-300"
                   >
                     hello@kulffi.com
                   </a>
@@ -245,7 +245,7 @@ export default function Contact({ layered = false }: ContactProps) {
                 onChange={handleChange}
                 placeholder="Jane Doe"
                 disabled={status === "loading"}
-                className={`w-full bg-transparent border-b-2 border-[#FCE9D5]/25 text-[#FCE9D5] text-lg md:text-xl placeholder-[#FCE9D5]/30 outline-none focus:border-[#FCE9D5] transition-colors duration-300 disabled:opacity-40 ${layered ? "py-3" : "py-4"}`}
+                  className={`w-full bg-transparent border-b-2 border-[#FCE9D5]/25 text-[#FCE9D5] text-base md:text-xl placeholder-[#FCE9D5]/30 outline-none focus:border-[#FCE9D5] transition-colors duration-300 disabled:opacity-40 ${layered ? "py-3" : "py-4"}`}
               />
             </div>
 
@@ -262,7 +262,7 @@ export default function Contact({ layered = false }: ContactProps) {
                 onChange={handleChange}
                 placeholder="jane@example.com"
                 disabled={status === "loading"}
-                className={`w-full bg-transparent border-b-2 border-[#FCE9D5]/25 text-[#FCE9D5] text-lg md:text-xl placeholder-[#FCE9D5]/30 outline-none focus:border-[#FCE9D5] transition-colors duration-300 disabled:opacity-40 ${layered ? "py-3" : "py-4"}`}
+                className={`w-full bg-transparent border-b-2 border-[#FCE9D5]/25 text-[#FCE9D5] text-base md:text-xl placeholder-[#FCE9D5]/30 outline-none focus:border-[#FCE9D5] transition-colors duration-300 disabled:opacity-40 ${layered ? "py-3" : "py-4"}`}
               />
             </div>
 
@@ -279,7 +279,7 @@ export default function Contact({ layered = false }: ContactProps) {
                 onChange={handleChange}
                 placeholder="Tell us what's on your mind..."
                 disabled={status === "loading"}
-                className={`w-full bg-transparent border-b-2 border-[#FCE9D5]/25 text-[#FCE9D5] text-lg md:text-xl placeholder-[#FCE9D5]/30 outline-none focus:border-[#FCE9D5] transition-colors duration-300 resize-none disabled:opacity-40 ${layered ? "py-3" : "py-4"}`}
+                className={`w-full bg-transparent border-b-2 border-[#FCE9D5]/25 text-[#FCE9D5] text-base md:text-xl placeholder-[#FCE9D5]/30 outline-none focus:border-[#FCE9D5] transition-colors duration-300 resize-none disabled:opacity-40 ${layered ? "py-3" : "py-4"}`}
               />
             </div>
 

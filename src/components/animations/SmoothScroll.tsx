@@ -19,10 +19,14 @@ export default function SmoothScroll({
     const isTouchDevice =
       "ontouchstart" in window || navigator.maxTouchPoints > 0;
 
+    if (isTouchDevice) {
+      lenisRef.current = null;
+      return undefined;
+    }
+
     const lenis = new Lenis({
-      lerp: isTouchDevice ? 0.12 : 0.055,
+      lerp: 0.055,
       smoothWheel: true,
-      syncTouch: false,
     });
 
     lenis.on("scroll", ScrollTrigger.update);
