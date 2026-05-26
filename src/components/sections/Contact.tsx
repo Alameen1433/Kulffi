@@ -3,8 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Mail, MapPin, Phone, Globe, Loader2, CheckCircle2, AlertCircle } from "lucide-react";
+import { Mail, MapPin, Phone, Globe, Loader2, CheckCircle2, AlertCircle, Send } from "lucide-react";
 import { SOCIAL_LINKS } from "@/lib/constants/navigation";
+import DemoNoticeModal from "@/components/shared/DemoNoticeModal";
 
 interface ContactProps {
   layered?: boolean;
@@ -19,6 +20,7 @@ export default function Contact({ layered = false }: ContactProps) {
   const [status, setStatus] = useState<SubmitStatus>("idle");
   const [errorMsg, setErrorMsg] = useState("");
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [showDemoNotice, setShowDemoNotice] = useState(false);
 
   useEffect(() => {
     if (layered) return;
@@ -88,29 +90,9 @@ export default function Contact({ layered = false }: ContactProps) {
       return;
     }
 
-    setStatus("loading");
+    setStatus("idle");
     setErrorMsg("");
-
-    try {
-      const res = await fetch("/api/contact", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        throw new Error(data.error || "Something went wrong");
-      }
-
-      setStatus("success");
-      setFormData({ name: "", email: "", message: "" });
-      setTimeout(() => setStatus("idle"), 6000);
-    } catch (err) {
-      setStatus("error");
-      setErrorMsg(err instanceof Error ? err.message : "Failed to send");
-    }
+    setShowDemoNotice(true);
   };
 
   // Fields animate in via GSAP; no inline opacity needed
@@ -120,21 +102,21 @@ export default function Contact({ layered = false }: ContactProps) {
       id="contact"
       ref={sectionRef}
       className={`${
-        layered ? "absolute inset-0 z-0 min-h-screen" : "relative"
+        layered ? "absolute inset-0 z-0 min-h-screen-safe" : "relative"
       } bg-[#A31D1D]`}
     >
       <div
-        className={`px-6 md:px-12 max-w-[1400px] mx-auto flex flex-col ${
+        className={`px-5 md:px-12 max-w-[1400px] mx-auto flex flex-col ${
           layered
-            ? "min-h-full h-full pt-20 md:pt-24 lg:pt-28 pb-8 md:pb-10 justify-start md:justify-center overflow-y-auto overflow-x-hidden"
+            ? "min-h-full h-full pt-[4.5rem] md:pt-24 lg:pt-28 pb-6 md:pb-10 justify-start md:justify-center overflow-y-auto overflow-x-hidden pb-safe"
             : "py-24 md:py-32"
         }`}
       >
         {/* ── Header ── */}
-        <div className={`${layered ? "mb-8 md:mb-10" : "mb-16 md:mb-20"}`}>
+        <div className={`${layered ? "mb-7 md:mb-10" : "mb-16 md:mb-20"}`}>
           <h2
             ref={headlineRef}
-            className="font-blenny text-[clamp(2.8rem,6vw,5rem)] leading-[1] tracking-tight text-[#FCE9D5]"
+            className="font-blenny text-[clamp(2.5rem,14vw,5rem)] leading-[1] tracking-tight text-[#FCE9D5]"
           >
             Say Hello
           </h2>
@@ -144,9 +126,9 @@ export default function Contact({ layered = false }: ContactProps) {
         </div>
 
         {/* ── Content Grid ── */}
-        <div className={`grid lg:grid-cols-[1fr_1.2fr] ${layered ? "gap-10 md:gap-14 lg:gap-16" : "gap-16 md:gap-20 lg:gap-24"}`}>
+        <div className={`grid lg:grid-cols-[1fr_1.2fr] ${layered ? "gap-8 md:gap-14 lg:gap-16" : "gap-16 md:gap-20 lg:gap-24"}`}>
           {/* Left: Contact Info */}
-          <div className={`flex flex-col ${layered ? "gap-6 md:gap-8" : "gap-10 md:gap-12"}`}>
+          <div className={`flex flex-col ${layered ? "gap-5 md:gap-8" : "gap-10 md:gap-12"}`}>
             <div className="form-field">
               <div className="flex items-start gap-4">
                 <div className="flex items-center justify-center h-10 w-10 rounded-full border border-[#FCE9D5]/20 shrink-0">
@@ -158,7 +140,7 @@ export default function Contact({ layered = false }: ContactProps) {
                   </p>
                   <a
                     href="mailto:hello@kulffi.com"
-                    className="text-base md:text-lg text-[#FCE9D5] hover:text-[#FCE9D5]/80 transition-colors duration-300"
+                  className="break-all text-base md:text-lg text-[#FCE9D5] hover:text-[#FCE9D5]/80 transition-colors duration-300"
                   >
                     hello@kulffi.com
                   </a>
@@ -245,7 +227,7 @@ export default function Contact({ layered = false }: ContactProps) {
                 onChange={handleChange}
                 placeholder="Jane Doe"
                 disabled={status === "loading"}
-                className={`w-full bg-transparent border-b-2 border-[#FCE9D5]/25 text-[#FCE9D5] text-lg md:text-xl placeholder-[#FCE9D5]/30 outline-none focus:border-[#FCE9D5] transition-colors duration-300 disabled:opacity-40 ${layered ? "py-3" : "py-4"}`}
+                  className={`w-full bg-transparent border-b-2 border-[#FCE9D5]/25 text-[#FCE9D5] text-base md:text-xl placeholder-[#FCE9D5]/30 outline-none focus:border-[#FCE9D5] transition-colors duration-300 disabled:opacity-40 ${layered ? "py-3" : "py-4"}`}
               />
             </div>
 
@@ -262,7 +244,7 @@ export default function Contact({ layered = false }: ContactProps) {
                 onChange={handleChange}
                 placeholder="jane@example.com"
                 disabled={status === "loading"}
-                className={`w-full bg-transparent border-b-2 border-[#FCE9D5]/25 text-[#FCE9D5] text-lg md:text-xl placeholder-[#FCE9D5]/30 outline-none focus:border-[#FCE9D5] transition-colors duration-300 disabled:opacity-40 ${layered ? "py-3" : "py-4"}`}
+                className={`w-full bg-transparent border-b-2 border-[#FCE9D5]/25 text-[#FCE9D5] text-base md:text-xl placeholder-[#FCE9D5]/30 outline-none focus:border-[#FCE9D5] transition-colors duration-300 disabled:opacity-40 ${layered ? "py-3" : "py-4"}`}
               />
             </div>
 
@@ -279,7 +261,7 @@ export default function Contact({ layered = false }: ContactProps) {
                 onChange={handleChange}
                 placeholder="Tell us what's on your mind..."
                 disabled={status === "loading"}
-                className={`w-full bg-transparent border-b-2 border-[#FCE9D5]/25 text-[#FCE9D5] text-lg md:text-xl placeholder-[#FCE9D5]/30 outline-none focus:border-[#FCE9D5] transition-colors duration-300 resize-none disabled:opacity-40 ${layered ? "py-3" : "py-4"}`}
+                className={`w-full bg-transparent border-b-2 border-[#FCE9D5]/25 text-[#FCE9D5] text-base md:text-xl placeholder-[#FCE9D5]/30 outline-none focus:border-[#FCE9D5] transition-colors duration-300 resize-none disabled:opacity-40 ${layered ? "py-3" : "py-4"}`}
               />
             </div>
 
@@ -303,25 +285,32 @@ export default function Contact({ layered = false }: ContactProps) {
               <button
                 type="submit"
                 disabled={status === "loading"}
-                className="group relative inline-flex items-center justify-center h-14 md:h-16 w-14 md:w-16 rounded-full bg-[#FCE9D5] border-[3px] border-[#A31D1D] shadow-[4px_4px_0_#2A1810] transition-all duration-300 hover:-translate-y-1 hover:shadow-[6px_6px_0_#2A1810] active:translate-y-[2px] active:shadow-[2px_2px_0_#2A1810] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0 disabled:hover:shadow-[4px_4px_0_#2A1810] overflow-hidden"
+                className="group relative inline-flex min-h-14 w-full items-center justify-center gap-3 rounded-full border-[3px] border-[#2A1810] bg-[#FCE9D5] px-7 py-3.5 text-[#A31D1D] shadow-[5px_5px_0_#2A1810] transition-all duration-300 hover:-translate-y-1 hover:bg-[#FFD166] hover:shadow-[7px_7px_0_#2A1810] active:translate-y-[2px] active:shadow-[2px_2px_0_#2A1810] disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0 disabled:hover:bg-[#FCE9D5] disabled:hover:shadow-[5px_5px_0_#2A1810] sm:w-auto sm:min-w-[13rem] md:min-h-16 md:min-w-[15rem] md:px-9"
               >
-                {/* Rotating background ring on hover */}
-                <span className="absolute inset-0 rounded-full border-2 border-dashed border-[#A31D1D]/20 scale-90 opacity-0 group-hover:opacity-100 group-hover:scale-110 group-hover:rotate-180 transition-all duration-700" />
-                
                 {status === "loading" ? (
                   <Loader2 className="h-5 w-5 text-[#A31D1D] animate-spin" strokeWidth={2.5} />
                 ) : status === "success" ? (
                   <CheckCircle2 className="h-5 w-5 text-emerald-600" strokeWidth={2.5} />
                 ) : (
-                  <span className="font-display font-black text-xs uppercase tracking-[0.15em] text-[#A31D1D] group-hover:scale-110 transition-transform duration-300">
-                    Send
-                  </span>
+                  <>
+                    <span className="font-display text-[13px] font-black uppercase tracking-[0.18em] md:text-sm">
+                      Send Message
+                    </span>
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#A31D1D] text-[#FCE9D5] transition-transform duration-300 group-hover:translate-x-1">
+                      <Send className="h-4 w-4" strokeWidth={2.5} />
+                    </span>
+                  </>
                 )}
               </button>
             </div>
           </form>
         </div>
       </div>
+      <DemoNoticeModal
+        open={showDemoNotice}
+        onClose={() => setShowDemoNotice(false)}
+        actionLabel="Contact form submission"
+      />
     </section>
   );
 }

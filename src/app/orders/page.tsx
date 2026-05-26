@@ -26,7 +26,7 @@ function OrdersContent() {
     <div className="min-h-screen bg-[#F5E6D3]">
       <Header />
 
-      <main className="pt-28 pb-20 px-6 md:px-12">
+      <main className="pt-24 pb-16 px-4 md:pt-28 md:pb-20 md:px-12">
         <div className="max-w-4xl mx-auto">
           {/* Breadcrumb / Back */}
           <div className="mb-8">
@@ -40,16 +40,16 @@ function OrdersContent() {
           </div>
 
           {/* Page Header */}
-          <div ref={headerRef} className="mb-10">
+          <div ref={headerRef} className="mb-8 md:mb-10">
             <div className="flex items-center gap-3 mb-3">
               <div className="h-10 w-10 rounded-xl bg-[#A31D1D] flex items-center justify-center shadow-[3px_3px_0_#2A1810]">
                 <Package className="h-5 w-5 text-[#FCE9D5]" />
               </div>
-              <h1 className="font-blenny text-3xl md:text-4xl text-[#A31D1D]">
+              <h1 className="font-blenny text-[2rem] leading-none md:text-4xl text-[#A31D1D]">
                 Track Orders
               </h1>
             </div>
-            <p className="text-sm text-[#A31D1D]/60 ml-[52px]">
+            <p className="text-sm text-[#A31D1D]/60 md:ml-[52px]">
               View your order history and track delivery status in real-time.
             </p>
           </div>

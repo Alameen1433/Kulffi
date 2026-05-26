@@ -5,6 +5,10 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Marquee from "@/components/sections/Marquee";
 
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
 export default function PopsicleHero({
   children,
 }: {
@@ -27,118 +31,77 @@ export default function PopsicleHero({
 
     if (!section || !inner || !curtain || !imageWrap || !img) return;
 
-    const triggers: ScrollTrigger[] = [];
     const mm = gsap.matchMedia();
 
-    mm.add("(min-width: 900px)", () => {
+    const desktopAnimation = () => {
+      gsap.set(curtain, { yPercent: 0 });
+      gsap.set(img, { scale: 1 });
+      gsap.set(imageWrap, { clipPath: "inset(0% 0% 0% 0% round 0px)" });
+      if (overlay) gsap.set(overlay, { opacity: 0.45 });
+
       const scrollTl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
           start: "top top",
-          end: "+=120%",
-          pin: inner,
-          pinSpacing: false,
+          end: "bottom bottom",
           scrub: 0.6,
           invalidateOnRefresh: true,
         },
       });
 
-      if (scrollTl.scrollTrigger) triggers.push(scrollTl.scrollTrigger);
-
-      scrollTl.fromTo(
-        img,
-        { scale: 1 },
-        { scale: 1.25, ease: "none" },
-        0
-      );
-
+      scrollTl.fromTo(img, { scale: 1 }, { scale: 1.25, ease: "none" }, 0);
       scrollTl.fromTo(
         imageWrap,
         { clipPath: "inset(0% 0% 0% 0% round 0px)" },
         { clipPath: "inset(12% 27.5% 12% 27.5% round 24px)", ease: "none" },
         0.15
       );
-
       if (overlay) {
-        scrollTl.fromTo(
-          overlay,
-          { opacity: 0.45 },
-          { opacity: 0, ease: "none" },
-          0.3
-        );
+        scrollTl.fromTo(overlay, { opacity: 0.45 }, { opacity: 0, ease: "none" }, 0.3);
       }
+      scrollTl.to(curtain, { yPercent: -90, ease: "none" }, 0.5);
 
-      scrollTl.to(
-        curtain,
-        {
-          yPercent: -90,
-          ease: "none",
-        },
-        0.5
-      );
+      return () => scrollTl.kill();
+    };
 
-      return () => {
-        scrollTl.kill();
-        if (scrollTl.scrollTrigger) scrollTl.scrollTrigger.kill();
-      };
-    });
+    const mobileAnimation = () => {
+      gsap.set(curtain, { yPercent: 0 });
+      gsap.set(img, { scale: 1 });
+      gsap.set(imageWrap, { clipPath: "inset(0% 0% 0% 0% round 0px)" });
+      if (overlay) gsap.set(overlay, { opacity: 0.45 });
 
-    mm.add("(max-width: 899px)", () => {
-      const mobileTl = gsap.timeline({
+      const scrollTl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
           start: "top top",
-          end: "+=100%",
-          pin: inner,
-          pinSpacing: false,
-          scrub: 0.55,
+          end: "bottom bottom",
+          scrub: 0.35,
           invalidateOnRefresh: true,
         },
       });
 
-      if (mobileTl.scrollTrigger) triggers.push(mobileTl.scrollTrigger);
-
-      mobileTl.fromTo(
-        img,
-        { scale: 1 },
-        { scale: 1.1, ease: "none" },
-        0
-      );
-
-      mobileTl.fromTo(
+      scrollTl.fromTo(img, { scale: 1 }, { scale: 1.08, ease: "none" }, 0);
+      scrollTl.fromTo(
         imageWrap,
         { clipPath: "inset(0% 0% 0% 0% round 0px)" },
-        { clipPath: "inset(10% 8% 18% 8% round 22px)", ease: "none" },
-        0.14
+        { clipPath: "inset(7% 6% 14% 6% round 20px)", ease: "none" },
+        0.12
       );
-
       if (overlay) {
-        mobileTl.fromTo(
-          overlay,
-          { opacity: 0.45 },
-          { opacity: 0.08, ease: "none" },
-          0.3
-        );
+        scrollTl.fromTo(overlay, { opacity: 0.45 }, { opacity: 0.1, ease: "none" }, 0.25);
       }
+      scrollTl.to(curtain, { yPercent: -92, ease: "none" }, 0.48);
 
-      mobileTl.to(
-        curtain,
-        {
-          yPercent: -90,
-          ease: "none",
-        },
-        0.52
-      );
+      return () => scrollTl.kill();
+    };
 
-      return () => {
-        mobileTl.kill();
-        if (mobileTl.scrollTrigger) mobileTl.scrollTrigger.kill();
-      };
-    });
+    mm.add("(min-width: 900px)", desktopAnimation);
+    mm.add("(max-width: 899px)", mobileAnimation);
+    const refreshId = requestAnimationFrame(() => ScrollTrigger.refresh());
 
     return () => {
+      cancelAnimationFrame(refreshId);
       mm.revert();
-      triggers.forEach((st) => st.kill());
     };
   }, []);
 
@@ -146,11 +109,11 @@ export default function PopsicleHero({
     <section
       id="popsicle-hero"
       ref={sectionRef}
-      className="relative bg-[#A31D1D] h-[220vh]"
+      className="popsicle-hero relative bg-[#A31D1D]"
     >
       <div
         ref={innerRef}
-        className="relative h-screen w-full overflow-hidden"
+        className="popsicle-hero__stage relative w-full overflow-hidden"
       >
         <div className="absolute inset-0 z-0">
           {children}
@@ -158,7 +121,7 @@ export default function PopsicleHero({
 
         <div
           ref={curtainRef}
-          className="absolute inset-0 z-10 overflow-hidden rounded-b-[36px] bg-[#F5E6D3]"
+          className="absolute inset-0 z-10 overflow-hidden rounded-b-[30px] bg-[#F5E6D3] md:rounded-b-[36px]"
         >
           <Marquee variant="background" />
 

@@ -28,6 +28,9 @@ export default function CartDrawer() {
       }
       if (drawerRef.current) {
         gsap.fromTo(drawerRef.current, { x: "100%" }, { x: "0%", duration: 0.4, ease: "power3.out" });
+        window.setTimeout(() => {
+          if (drawerRef.current) gsap.set(drawerRef.current, { x: "0%" });
+        }, 450);
       }
     } else {
       document.body.style.overflow = "";
@@ -75,10 +78,10 @@ export default function CartDrawer() {
         className="absolute right-0 top-0 h-full w-full max-w-[520px] bg-[#FCE9D5] shadow-[-12px_0_40px_rgba(42,24,16,0.25)] flex flex-col"
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-6 py-5 border-b-2 border-[#A31D1D]/15 shrink-0">
+        <div className="flex items-center justify-between px-4 py-4 border-b-2 border-[#A31D1D]/15 shrink-0 md:px-6 md:py-5">
           <div className="flex items-center gap-3">
             <ShoppingBag className="h-5 w-5 text-[#A31D1D]" strokeWidth={2} />
-            <h2 className="font-display font-bold text-lg uppercase tracking-widest text-[#A31D1D]">
+            <h2 className="font-display font-bold text-base md:text-lg uppercase tracking-widest text-[#A31D1D]">
               Your Cart
             </h2>
             <span className="inline-flex items-center justify-center h-6 min-w-[24px] px-1.5 rounded-full bg-[#A31D1D] text-[#FCE9D5] text-[11px] font-bold">
@@ -95,7 +98,7 @@ export default function CartDrawer() {
         </div>
 
         {/* Checkout Flow */}
-        <div className="flex-1 overflow-hidden">
+        <div className="flex-1 overflow-hidden min-h-0">
           <CheckoutFlow />
         </div>
       </div>

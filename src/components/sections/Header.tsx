@@ -10,8 +10,10 @@ import { lenisRef } from "@/lib/lenis";
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [hideMobileHeader, setHideMobileHeader] = useState(false);
   const { totalCount, setIsOpen } = useCart();
   const menuRef = useRef<HTMLDivElement>(null);
+  const lastScrollYRef = useRef(0);
 
   useEffect(() => {
     if (!menuRef.current) return;
@@ -60,6 +62,25 @@ export default function Header() {
     }
   }, [menuOpen]);
 
+  useEffect(() => {
+    const onScroll = () => {
+      const currentY = window.scrollY;
+      const isMobile = window.innerWidth < 768;
+      const scrollingDown = currentY > lastScrollYRef.current;
+
+      setHideMobileHeader(isMobile && scrollingDown && currentY > 120 && !menuOpen);
+      lastScrollYRef.current = Math.max(0, currentY);
+    };
+
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, [menuOpen]);
+
   const scrollTo = useCallback((id: string) => {
     setMenuOpen(false);
     if (lenisRef.current) {
@@ -74,7 +95,9 @@ export default function Header() {
   return (
     <>
       <header
-        className="fixed top-0 left-0 right-0 z-50 flex items-start justify-between px-4 py-4 md:px-12 md:py-6 bg-transparent pointer-events-none"
+        className={`fixed top-0 left-0 right-0 z-50 flex items-start justify-between px-3 py-3 md:px-12 md:py-6 bg-transparent pointer-events-none transition-transform duration-300 ease-out ${
+          hideMobileHeader ? "-translate-y-full md:translate-y-0" : "translate-y-0"
+        }`}
       >
         {/* Logo: Kulffi */}
         <a
@@ -85,15 +108,15 @@ export default function Header() {
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
         >
-          <span className="font-blenny text-[2rem] md:text-5xl text-[#A31D1D] drop-shadow-[2px_2px_0_#FCE9D5] md:drop-shadow-[3px_3px_0_#FCE9D5]">
+          <span className="font-blenny block py-1 text-[1.65rem] leading-none md:text-5xl text-[#A31D1D] drop-shadow-[2px_2px_0_#FCE9D5] md:drop-shadow-[3px_3px_0_#FCE9D5]">
             KULFFI
           </span>
         </a>
 
         {/* Cartoonish Navigation Buttons */}
-        <div className="flex items-start gap-2 md:gap-4 pointer-events-auto">
+        <div className="flex items-start gap-1.5 md:gap-4 pointer-events-auto">
           
-          <div className="flex items-center gap-2 md:gap-4">
+          <div className="flex items-center gap-1.5 md:gap-4">
             {/* Orders Button */}
             <Link
               href="/orders"
@@ -108,7 +131,7 @@ export default function Header() {
             {/* Cart Button — Desktop & Mobile */}
             <button 
               onClick={() => setIsOpen(true)}
-              className="group flex items-center gap-2 md:gap-3 px-3 py-2 md:px-5 md:py-2.5 bg-[#FCE9D5] border-2 border-[#A31D1D] rounded-full text-[#A31D1D] font-display font-bold text-[11px] md:text-[13px] uppercase tracking-[0.15em] shadow-[3px_3px_0_#A31D1D] md:shadow-[4px_4px_0_#A31D1D] transition-all duration-300 hover:bg-[#A31D1D] hover:text-[#FCE9D5] hover:-translate-y-1 hover:shadow-[5px_5px_0_#2A1810] md:hover:shadow-[6px_6px_0_#2A1810] active:translate-y-[2px] active:shadow-[1px_1px_0_#2A1810] md:active:shadow-[2px_2px_0_#2A1810]"
+              className="group flex min-h-11 items-center gap-2 md:gap-3 px-3 py-2 md:px-5 md:py-2.5 bg-[#FCE9D5] border-2 border-[#A31D1D] rounded-full text-[#A31D1D] font-display font-bold text-[11px] md:text-[13px] uppercase tracking-[0.12em] md:tracking-[0.15em] shadow-[2px_2px_0_#A31D1D] md:shadow-[4px_4px_0_#A31D1D] transition-all duration-300 hover:bg-[#A31D1D] hover:text-[#FCE9D5] hover:-translate-y-1 hover:shadow-[5px_5px_0_#2A1810] md:hover:shadow-[6px_6px_0_#2A1810] active:translate-y-[2px] active:shadow-[1px_1px_0_#2A1810] md:active:shadow-[2px_2px_0_#2A1810]"
             >
               <div className="flex items-center justify-center transition-transform duration-300 group-hover:scale-110">
                 <ShoppingBag className="h-[13px] w-[13px] md:h-[15px] md:w-[15px]" strokeWidth={2} />
@@ -123,7 +146,7 @@ export default function Header() {
 
           {/* Menu Button (Desktop & Mobile) */}
           <button 
-            className="group flex items-center gap-2 md:gap-4 px-4 py-2 md:px-6 md:py-2.5 bg-[#FCE9D5] border-2 border-[#A31D1D] rounded-full text-[#A31D1D] font-display font-bold text-[11px] md:text-[13px] uppercase tracking-[0.15em] shadow-[3px_3px_0_#A31D1D] md:shadow-[4px_4px_0_#A31D1D] transition-all duration-300 hover:bg-[#A31D1D] hover:text-[#FCE9D5] hover:-translate-y-1 hover:shadow-[5px_5px_0_#2A1810] md:hover:shadow-[6px_6px_0_#2A1810] active:translate-y-[2px] active:shadow-[1px_1px_0_#2A1810] md:active:shadow-[2px_2px_0_#2A1810]"
+            className="group flex min-h-11 items-center gap-2 md:gap-4 px-3.5 py-2 md:px-6 md:py-2.5 bg-[#FCE9D5] border-2 border-[#A31D1D] rounded-full text-[#A31D1D] font-display font-bold text-[11px] md:text-[13px] uppercase tracking-[0.12em] md:tracking-[0.15em] shadow-[2px_2px_0_#A31D1D] md:shadow-[4px_4px_0_#A31D1D] transition-all duration-300 hover:bg-[#A31D1D] hover:text-[#FCE9D5] hover:-translate-y-1 hover:shadow-[5px_5px_0_#2A1810] md:hover:shadow-[6px_6px_0_#2A1810] active:translate-y-[2px] active:shadow-[1px_1px_0_#2A1810] md:active:shadow-[2px_2px_0_#2A1810]"
             onClick={() => setMenuOpen(!menuOpen)}
           >
             <span className="inline-block transition-transform duration-300 group-hover:-translate-x-1">Menu</span>
@@ -140,11 +163,11 @@ export default function Header() {
       {/* Overlay Menu */}
       <div
         ref={menuRef}
-        className="fixed inset-0 z-[60] hidden flex-col items-center justify-center bg-[#FCE9D5]/95 backdrop-blur-md text-[#A31D1D] pointer-events-none"
+        className="fixed inset-0 z-[60] hidden flex-col items-center justify-center bg-[#FCE9D5]/95 px-6 text-center backdrop-blur-md text-[#A31D1D] pointer-events-none"
       >
         {/* Close Button */}
         <button 
-          className="absolute top-8 right-8 md:top-12 md:right-12 z-50 text-[#A31D1D] hover:rotate-90 transition-transform duration-500"
+          className="absolute top-5 right-5 md:top-12 md:right-12 z-50 flex h-11 w-11 items-center justify-center text-[#A31D1D] hover:rotate-90 transition-transform duration-500"
           onClick={() => setMenuOpen(false)}
         >
           <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
@@ -154,21 +177,21 @@ export default function Header() {
         </button>
         
         {/* Main Links */}
-        <nav className="flex flex-col items-center gap-6 md:gap-8">
+        <nav className="flex flex-col items-center gap-5 md:gap-8">
           {[...NAV_ITEMS, { id: "/orders", label: "Track Orders" }].map((item) => (
             <div key={item.id} className="overflow-hidden">
               {item.id.startsWith("/") ? (
                 <Link
                   href={item.id}
                   onClick={() => setMenuOpen(false)}
-                  className="menu-link-inner block font-blenny text-4xl md:text-5xl tracking-wide text-[#A31D1D] transition-all duration-500 hover:text-[#A31D1D]/60 hover:-translate-y-1"
+                  className="menu-link-inner block font-blenny text-[2.25rem] leading-tight md:text-5xl tracking-wide text-[#A31D1D] transition-all duration-500 hover:text-[#A31D1D]/60 hover:-translate-y-1"
                 >
                   {item.label}
                 </Link>
               ) : (
                 <button
                   onClick={() => scrollTo(item.id)}
-                  className="menu-link-inner block font-blenny text-4xl md:text-5xl tracking-wide text-[#A31D1D] transition-all duration-500 hover:text-[#A31D1D]/60 hover:-translate-y-1"
+                  className="menu-link-inner block font-blenny text-[2.25rem] leading-tight md:text-5xl tracking-wide text-[#A31D1D] transition-all duration-500 hover:text-[#A31D1D]/60 hover:-translate-y-1"
                 >
                   {item.label}
                 </button>
@@ -178,7 +201,7 @@ export default function Header() {
         </nav>
         
         {/* Simple Footer */}
-        <div className="absolute bottom-10 menu-fade flex flex-col items-center gap-2">
+        <div className="absolute bottom-8 menu-fade flex flex-col items-center gap-2 px-6 pb-safe">
           <p className="font-display text-xs tracking-[0.2em] uppercase text-[#A31D1D]/60 text-center">
              hello@kulffi.com
           </p>
