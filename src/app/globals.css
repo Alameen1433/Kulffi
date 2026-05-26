@@ -143,6 +143,39 @@
   max-width: 100vw !important;
 }
 
+.hero-scroll-stage {
+  height: 100vh;
+  height: 100svh;
+}
+
+@media (max-width: 899px) {
+  .hero-scroll-section {
+    height: 170svh;
+  }
+
+  .hero-scroll-stage {
+    position: sticky;
+    top: 0;
+  }
+}
+
+.popsicle-hero {
+  height: 185svh;
+}
+
+.popsicle-hero__stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100svh;
+}
+
+@media (min-width: 900px) {
+  .popsicle-hero {
+    height: 220vh;
+  }
+}
+
 /* Custom Animations */
 @keyframes loading-indicator {
   0% {

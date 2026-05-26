@@ -17,6 +17,7 @@ import {
   ExternalLink,
 } from "lucide-react";
 import Link from "next/link";
+import DemoNoticeModal from "@/components/shared/DemoNoticeModal";
 
 function StepIndicator({
   steps,
@@ -64,9 +65,10 @@ function StepIndicator({
   );
 }
 
-function CartStep({ onNext }: { onNext: () => void }) {
+function CartStep() {
   const { items, updateQuantity, removeItem, totalPrice, clearCart } = useCart();
   const contentRef = useRef<HTMLDivElement>(null);
+  const [showDemoNotice, setShowDemoNotice] = useState(false);
 
   useEffect(() => {
     if (contentRef.current) {
@@ -162,11 +164,16 @@ function CartStep({ onNext }: { onNext: () => void }) {
         </div>
         <p className="text-[11px] text-[#A31D1D]/40 mb-5">Shipping & taxes calculated at checkout.</p>
         <button
-          onClick={onNext}
+          onClick={() => setShowDemoNotice(true)}
           className="w-full py-4 bg-[#A31D1D] text-[#FCE9D5] font-display font-bold text-sm uppercase tracking-[0.2em] rounded-full shadow-[4px_4px_0_#2A1810] transition-all duration-300 hover:-translate-y-1 hover:shadow-[6px_6px_0_#2A1810] active:translate-y-[2px] active:shadow-[2px_2px_0_#2A1810]"
         >
           Checkout
         </button>
+        <DemoNoticeModal
+          open={showDemoNotice}
+          onClose={() => setShowDemoNotice(false)}
+          actionLabel="Checkout"
+        />
       </div>
     </div>
   );
@@ -1008,7 +1015,7 @@ export default function CheckoutFlow() {
         <StepIndicator steps={steps} current={stepIndex} />
       )}
       <div className="flex-1 overflow-hidden min-h-0">
-        {checkoutStep === "cart" && <CartStep onNext={() => setCheckoutStep("shipping")} />}
+        {checkoutStep === "cart" && <CartStep />}
         {checkoutStep === "shipping" && (
           <ShippingStep onNext={() => setCheckoutStep("payment")} onBack={() => setCheckoutStep("cart")} />
         )}

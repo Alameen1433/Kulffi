@@ -6,6 +6,10 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Flower2 } from "lucide-react";
 import Marquee from "@/components/sections/Marquee";
 
+if (typeof window !== "undefined") {
+  gsap.registerPlugin(ScrollTrigger);
+}
+
 interface HeroProps {
   loaded?: boolean;
 }
@@ -76,6 +80,12 @@ export default function Hero({ loaded = false }: HeroProps) {
     const mm = gsap.matchMedia();
 
     mm.add("(min-width: 900px)", () => {
+      gsap.set(inner, { clearProps: "position,top" });
+      gsap.set(marqueeWrap, { yPercent: 100 });
+      gsap.set(img, { scale: 1 });
+      gsap.set(imageWrap, { clipPath: "inset(0% 0% 0% 0% round 0px)" });
+      if (overlay) gsap.set(overlay, { opacity: 0.45 });
+
       const scrollTl = gsap.timeline({
         scrollTrigger: {
           trigger: inner,
@@ -122,14 +132,18 @@ export default function Hero({ loaded = false }: HeroProps) {
     });
 
     mm.add("(max-width: 899px)", () => {
+      gsap.set(marqueeWrap, { yPercent: 100 });
+      gsap.set(img, { scale: 1 });
+      gsap.set(imageWrap, { clipPath: "inset(0% 0% 0% 0% round 0px)" });
+      if (overlay) gsap.set(overlay, { opacity: 0.45 });
+
       const mobileTl = gsap.timeline({
         scrollTrigger: {
           trigger: section,
           start: "top top",
-          end: "bottom top",
-          scrub: 0.55,
+          end: "bottom bottom",
+          scrub: 0.35,
           invalidateOnRefresh: true,
-          anticipatePin: 1,
         },
       });
       if (mobileTl.scrollTrigger) triggers.push(mobileTl.scrollTrigger);
@@ -173,9 +187,9 @@ export default function Hero({ loaded = false }: HeroProps) {
   return (
     <section
       ref={sectionRef}
-      className="relative bg-[#F5E6D3]"
+      className="hero-scroll-section relative bg-[#F5E6D3]"
     >
-      <div ref={innerRef} className="relative h-screen-safe min-h-[680px] w-full overflow-hidden bg-[#F5E6D3] md:h-screen md:min-h-0">
+      <div ref={innerRef} className="hero-scroll-stage relative w-full overflow-hidden bg-[#F5E6D3]">
         {/* Marquee background (moves up during scroll) */}
         <div ref={marqueeWrapRef} className="absolute inset-0 z-0 will-change-transform">
           <Marquee variant="background" />

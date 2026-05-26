@@ -51,26 +51,25 @@ export default function Story() {
   const imgRef = useRef<HTMLImageElement>(null);
   const lineRefs = useRef<(HTMLDivElement | null)[]>([]);
 
-const scrollRef = useRef(0);
-    const smoothScrollRef = useRef(0);
-    const isVisibleRef = useRef(false);
+  const scrollRef = useRef(0);
+  const isVisibleRef = useRef(false);
 
-    useEffect(() => {
-      const section = sectionRef.current;
-      const img = imgRef.current;
-      if (!section || !img) return;
+  useEffect(() => {
+    const section = sectionRef.current;
+    const img = imgRef.current;
+    if (!section || !img) return;
 
-      // IntersectionObserver to pause rAF loop when section is off-screen
-      const visibilityObserver = new IntersectionObserver(
-        ([entry]) => {
-          isVisibleRef.current = entry.isIntersecting;
-        },
-        { threshold: 0 }
-      );
-      visibilityObserver.observe(section);
+    // IntersectionObserver to pause rAF loop when section is off-screen
+    const visibilityObserver = new IntersectionObserver(
+      ([entry]) => {
+        isVisibleRef.current = entry.isIntersecting;
+      },
+      { threshold: 0 }
+    );
+    visibilityObserver.observe(section);
 
-      // Parallax background image — gentle drift, full image visible
-      const parallaxTween = gsap.fromTo(
+    // Parallax background image — gentle drift, full image visible
+    const parallaxTween = gsap.fromTo(
       img,
       { y: "-12%" },
       {
@@ -90,15 +89,15 @@ const scrollRef = useRef(0);
     const onScroll = () => {
       const rect = section.getBoundingClientRect();
       const vh = window.innerHeight;
-      scrollRef.current = Math.max(0, Math.min(1, -rect.top / (rect.height - vh)));
+      const scrollRange = Math.max(1, rect.height - vh);
+      scrollRef.current = clamp(-rect.top / scrollRange, 0, 1);
     };
 
     const loop = () => {
       rafId = requestAnimationFrame(loop);
       if (!isVisibleRef.current) return;
 
-      smoothScrollRef.current += (scrollRef.current - smoothScrollRef.current) * 0.05;
-      const sp = smoothScrollRef.current;
+      const sp = scrollRef.current;
 
       STORY_LINES.forEach((_, lineIndex) => {
         const lineEl = lineRefs.current[lineIndex];
@@ -126,11 +125,13 @@ const scrollRef = useRef(0);
     };
 
     window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
     onScroll();
     rafId = requestAnimationFrame(loop);
 
     return () => {
       window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
       cancelAnimationFrame(rafId);
       visibilityObserver.disconnect();
       parallaxTween.kill();
@@ -142,8 +143,7 @@ const scrollRef = useRef(0);
     <section
       ref={sectionRef}
       id="story-section"
-      className="relative overflow-hidden"
-      style={{ minHeight: "100svh" }}
+      className="relative min-h-[160svh] md:min-h-[170svh]"
     >
       {/* Parallax background — full bleed */}
       <div className="absolute inset-0 z-0 overflow-hidden">
@@ -166,7 +166,7 @@ const scrollRef = useRef(0);
       </div>
 
       {/* Story text — centered, sticky feel via scroll range */}
-      <div className="relative z-10 flex min-h-screen-safe items-center justify-center px-5 md:px-6">
+      <div className="sticky top-0 z-10 flex min-h-screen-safe items-center justify-center px-5 md:px-6">
         <div className="flex flex-col items-center gap-8 py-28 md:gap-14 md:py-56">
           {STORY_LINES.map((line, lineIndex) => {
             const words = line.split(" ");
